@@ -47,6 +47,8 @@ if __name__ == "__main__":
         HERE = os.path.dirname(os.path.abspath(__file__))
         ignore_file_path = os.path.join(HERE, ".gptignore")
 
+    gitignore_path = os.path.join(repo_path, ".gitignore")
+
     preamble_file = None
     if "-p" in sys.argv:
         preamble_file = sys.argv[sys.argv.index("-p") + 1]
@@ -60,6 +62,9 @@ if __name__ == "__main__":
     else:
         ignore_list = []
 
+    if os.path.exists(gitignore_path):
+        ignore_list += get_ignore_list(gitignore_path)
+
     with open(output_file_path, 'w') as output_file:
         if preamble_file:
             with open(preamble_file, 'r') as pf:
@@ -71,4 +76,3 @@ if __name__ == "__main__":
     with open(output_file_path, 'a') as output_file:
         output_file.write("--END--")
     print(f"Repository contents written to {output_file_path}.")
-    

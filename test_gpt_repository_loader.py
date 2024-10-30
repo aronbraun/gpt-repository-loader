@@ -19,10 +19,13 @@ class TestGPTRepositoryLoader(unittest.TestCase):
 
        # Create an ignore list for the example repository
        ignore_file_path = os.path.join(self.example_repo_path, ".gptignore")
+       gitignore_path = os.path.join(self.example_repo_path, ".gitignore")
        if os.path.exists(ignore_file_path):
            ignore_list = get_ignore_list(ignore_file_path)
        else:
            ignore_list = []
+       if os.path.exists(gitignore_path):
+           ignore_list += get_ignore_list(gitignore_path)
 
        # Run the gpt-repository-loader script on the example repository
        with open(output_file_path, 'w') as output_file:
