@@ -3,7 +3,7 @@ import unittest
 import os
 import tempfile
 import shutil
-from gpt_repository_loader import process_repository, get_ignore_list
+from gpt_repository_loader import process_repository, get_ignore_list, get_git_ignore_spec
 
 
 class TestGPTRepositoryLoader(unittest.TestCase):
@@ -24,12 +24,10 @@ class TestGPTRepositoryLoader(unittest.TestCase):
            ignore_list = get_ignore_list(ignore_file_path)
        else:
            ignore_list = []
-       if os.path.exists(gitignore_path):
-           ignore_list += get_ignore_list(gitignore_path)
 
        # Run the gpt-repository-loader script on the example repository
        with open(output_file_path, 'w') as output_file:
-           process_repository(self.example_repo_path, ignore_list, output_file)
+           process_repository(self.example_repo_path, ignore_list, output_file, get_git_ignore_spec(gitignore_path))
 
        # Compare the output to the expected output
        with open(output_file_path, 'r') as output_file, open(expected_output_file_path, 'r') as expected_output_file:
