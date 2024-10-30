@@ -1,3 +1,4 @@
+import sys
 import unittest
 import os
 import tempfile
@@ -29,7 +30,11 @@ class TestGPTRepositoryLoader(unittest.TestCase):
 
        # Compare the output to the expected output
        with open(output_file_path, 'r') as output_file, open(expected_output_file_path, 'r') as expected_output_file:
-           self.assertEqual(output_file.read(), expected_output_file.read())
+           expected_output = expected_output_file.read()
+           output = output_file.read()
+           if sys.platform == "win32":
+               expected_output = expected_output.replace("/", "\\")
+           self.assertEqual(output, expected_output)
 
        # Clean up the output file
        shutil.rmtree(os.path.dirname(output_file_path))
